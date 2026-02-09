@@ -43,7 +43,7 @@ echo ""
 
 # 環境変数設定
 export PYTORCH_ENABLE_MPS_FALLBACK=1
-export PYTORCH_MPS_HIGH_WATERMARK_RATIO=0.7
+export PYTORCH_MPS_HIGH_WATERMARK_RATIO=0.0
 export TOKENIZERS_PARALLELISM=false
 
 # .env ファイルがあれば読み込み
@@ -166,25 +166,19 @@ while [[ $# -gt 0 ]]; do
     esac
 done
 
-# ポートが使用中か確認
-if lsof -Pi :$PORT -sTCP:LISTEN -t >/dev/null 2>&1; then
-    log_warning "ポート $PORT は既に使用中です。"
-    echo ""
-    echo "解決策:"
-    echo "  1. 別のポートを指定: ./run.sh --port 7861"
-    echo "  2. 既存のプロセスを終了: kill \$(lsof -t -i:$PORT)"
-    echo ""
-    read -p "別のポート (7861) で起動しますか？ (Y/n): " -n 1 -r
-    echo ""
-    if [[ ! $REPLY =~ ^[Nn]$ ]]; then
-        PORT=7861
-        # 7861 も使用中なら 7862 を試す
-        if lsof -Pi :$PORT -sTCP:LISTEN -t >/dev/null 2>&1; then
-            PORT=7862
-        fi
-    else
+# ポートが使用中なら自動的に空きポートを探す
+ORIGINAL_PORT=$PORT
+while lsof -Pi :$PORT -sTCP:LISTEN -t >/dev/null 2>&1; do
+    log_warning "ポート $PORT は既に使用中です。次のポートを試します..."
+    PORT=$((PORT + 1))
+    # 100 ポート試してダメなら諦める
+    if [ $((PORT - ORIGINAL_PORT)) -ge 100 ]; then
+        log_error "ポート ${ORIGINAL_PORT}〜${PORT} はすべて使用中です。"
         exit 1
     fi
+done
+if [ "$PORT" != "$ORIGINAL_PORT" ]; then
+    log_success "空きポート $PORT を自動選択しました。"
 fi
 
 # 設定表示

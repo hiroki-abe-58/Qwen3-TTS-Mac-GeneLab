@@ -286,15 +286,28 @@ class PyTorchMPSEngine:
             logger.info(f"  device: {self._device}")
             logger.info(f"  attention: {attn_impl}")
 
-            # MPS の場合は device_map を使わず、ロード後に .to() で移動
+            # Voice Clone は CPU で実行（MPS の Placeholder storage 問題回避）
+            # それ以外のタスクは MPS に移動を試みる
+            use_cpu = (task_type == TaskType.VOICE_CLONE)
+
             self._model = Qwen3TTSModel.from_pretrained(
                 model_name,
-                torch_dtype=dtype,
+                dtype=dtype,
                 attn_implementation=attn_impl,
             )
-            # MPS にモデルを移動
-            if self._device == "mps":
-                self._model.model = self._model.model.to(self._device)
+
+            if not use_cpu and self._device == "mps":
+                try:
+                    self._model.model = self._model.model.to(self._device)
+                except RuntimeError as move_err:
+                    logger.warning(f"MPS への移動に失敗、CPU で実行します: {move_err}")
+                    use_cpu = True
+
+            if use_cpu:
+                logger.info("Voice Clone: CPU で実行します。")
+                self._model.model = self._model.model.to("cpu")
+                # デバイス参照を更新
+                self._model.device = torch.device("cpu")
 
             self._model_name = model_name
             self._dtype = dtype

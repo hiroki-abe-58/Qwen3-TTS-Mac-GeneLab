@@ -161,3 +161,6 @@ output*.wav
 
 # MLX cache
 .mlx_cache/
+
+# Test files
+testfile/

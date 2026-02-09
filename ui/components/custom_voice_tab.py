@@ -77,33 +77,19 @@ SPEAKERS = {
     },
 }
 
-# 言語選択
-LANGUAGES = {
-    "Japanese": "日本語",
-    "English": "英語",
-    "Chinese": "中国語",
-    "Korean": "韓国語",
-    "French": "フランス語",
-    "German": "ドイツ語",
-    "Spanish": "スペイン語",
-    "Italian": "イタリア語",
-    "Portuguese": "ポルトガル語",
-    "Russian": "ロシア語",
-}
+# 言語選択 (表示ラベル -> エンジン用キー)
+LANGUAGE_CHOICES = [
+    "Japanese", "English", "Chinese", "Korean",
+    "French", "German", "Spanish", "Italian",
+    "Portuguese", "Russian",
+]
 
-# 感情プリセット
-EMOTIONS = {
-    "neutral": "ニュートラル",
-    "happy": "嬉しい",
-    "sad": "悲しい",
-    "angry": "怒り",
-    "surprised": "驚き",
-    "fearful": "恐怖",
-    "disgusted": "嫌悪",
-    "calm": "穏やか",
-    "excited": "興奮",
-    "tender": "優しい",
-}
+# 感情プリセット (表示ラベル -> エンジン用キー)
+EMOTION_CHOICES = [
+    "neutral", "happy", "sad", "angry",
+    "surprised", "fearful", "disgusted",
+    "calm", "excited", "tender",
+]
 
 
 def generate_audio(
@@ -210,7 +196,7 @@ def create_custom_voice_tab() -> None:
             with gr.Row():
                 # 言語選択
                 language_selector = gr.Dropdown(
-                    choices=list(LANGUAGES.items()),
+                    choices=LANGUAGE_CHOICES,
                     value="Japanese",
                     label="言語",
                     info="出力音声の言語を選択",
@@ -218,7 +204,7 @@ def create_custom_voice_tab() -> None:
 
                 # 感情選択
                 emotion_selector = gr.Dropdown(
-                    choices=list(EMOTIONS.items()),
+                    choices=EMOTION_CHOICES,
                     value="neutral",
                     label="感情",
                     info="感情を指定（オプション）",

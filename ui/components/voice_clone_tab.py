@@ -21,18 +21,11 @@ import numpy as np
 logger = logging.getLogger(__name__)
 
 # 言語選択
-LANGUAGES = {
-    "Japanese": "日本語",
-    "English": "英語",
-    "Chinese": "中国語",
-    "Korean": "韓国語",
-    "French": "フランス語",
-    "German": "ドイツ語",
-    "Spanish": "スペイン語",
-    "Italian": "イタリア語",
-    "Portuguese": "ポルトガル語",
-    "Russian": "ロシア語",
-}
+LANGUAGE_CHOICES = [
+    "Japanese", "English", "Chinese", "Korean",
+    "French", "German", "Spanish", "Italian",
+    "Portuguese", "Russian",
+]
 
 
 def transcribe_audio(audio_path: str, language: str) -> str:
@@ -164,7 +157,7 @@ def create_voice_clone_tab() -> None:
             # 書き起こしボタンと言語選択
             with gr.Row():
                 transcribe_language = gr.Dropdown(
-                    choices=list(LANGUAGES.items()),
+                    choices=LANGUAGE_CHOICES,
                     value="Japanese",
                     label="参照音声の言語",
                     scale=2,
@@ -196,7 +189,7 @@ def create_voice_clone_tab() -> None:
             with gr.Row():
                 # 出力言語選択
                 output_language = gr.Dropdown(
-                    choices=list(LANGUAGES.items()),
+                    choices=LANGUAGE_CHOICES,
                     value="Japanese",
                     label="出力言語",
                     info="生成音声の言語",

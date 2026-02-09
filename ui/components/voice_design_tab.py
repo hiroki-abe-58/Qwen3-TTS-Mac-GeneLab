@@ -20,18 +20,11 @@ import gradio as gr
 logger = logging.getLogger(__name__)
 
 # 言語選択
-LANGUAGES = {
-    "Japanese": "日本語",
-    "English": "英語",
-    "Chinese": "中国語",
-    "Korean": "韓国語",
-    "French": "フランス語",
-    "German": "ドイツ語",
-    "Spanish": "スペイン語",
-    "Italian": "イタリア語",
-    "Portuguese": "ポルトガル語",
-    "Russian": "ロシア語",
-}
+LANGUAGE_CHOICES = [
+    "Japanese", "English", "Chinese", "Korean",
+    "French", "German", "Spanish", "Italian",
+    "Portuguese", "Russian",
+]
 
 # ボイスデザインのサンプル
 VOICE_DESIGN_SAMPLES = [
@@ -138,7 +131,7 @@ def create_voice_design_tab() -> None:
             with gr.Row():
                 # 言語選択
                 language_selector = gr.Dropdown(
-                    choices=list(LANGUAGES.items()),
+                    choices=LANGUAGE_CHOICES,
                     value="Japanese",
                     label="言語",
                     info="出力音声の言語を選択",

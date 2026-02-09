@@ -38,12 +38,12 @@
 
 1. **デュアルエンジンアーキテクチャ**
    - MLX: Apple Silicon ネイティブ、8bit/4bit 量子化で高速・省メモリ
-   - PyTorch MPS: Voice Clone 等の float32 必須タスクに自動切替
+   - PyTorch: Voice Clone 等の float32 必須タスクに自動切替 (CPU 実行)
 
 2. **タスクに応じた自動最適化**
    - CustomVoice → MLX 優先 (高速)
    - VoiceDesign → MLX 優先 (高速)
-   - VoiceClone → PyTorch MPS (float32 精度必須)
+   - VoiceClone → PyTorch CPU (float32 精度必須、MPS 非互換回避)
 
 3. **完全日本語対応 Web UI**
    - Gradio ベースの直感的な UI
@@ -90,13 +90,21 @@ chmod +x setup_mac.sh
 
 ### 3. Web UI を起動
 
+**方法 A: ダブルクリック（推奨）**
+
+Finder で `run.command` をダブルクリックすると Terminal が開いて自動起動します。
+
+**方法 B: ターミナルから**
+
 ```bash
 ./run.sh
 ```
 
+> ポートが既に使用中の場合は、自動的に空きポートを検出して起動します。
+
 ### 4. ブラウザでアクセス
 
-http://localhost:7860 を開く
+http://localhost:7860 を開く（ポートが変更された場合はターミナルに表示される URL を確認）
 
 ---
 
@@ -165,17 +173,17 @@ http://localhost:7860 を開く
 
 ## MLX vs PyTorch MPS
 
-| 項目 | MLX (デフォルト) | PyTorch MPS |
+| 項目 | MLX (デフォルト) | PyTorch (CPU/MPS) |
 |------|-----------------|-------------|
 | 推論速度 | **高速** | 中速 |
 | メモリ効率 | **優秀** (量子化対応) | 普通 |
-| Voice Clone | 対応 | **float32 で安定** |
+| Voice Clone | 対応 | **float32 CPU で安定** |
 | 量子化 | **4bit/8bit** | 非対応 |
 | 精度 | やや低い場合あり | **高い** |
 
 **自動切替ロジック:**
 - CustomVoice/VoiceDesign → MLX を優先
-- VoiceClone → PyTorch MPS を強制 (float32 必須のため)
+- VoiceClone → PyTorch CPU を使用 (float32 必須、MPS の Placeholder storage 問題回避)
 
 ---
 
@@ -233,7 +241,8 @@ sf.write("cloned_output.wav", result.audio, result.sample_rate)
 ```
 Qwen3-TTS-Mac-GeneLab/
 ├── setup_mac.sh          # セットアップスクリプト
-├── run.sh                # 起動スクリプト
+├── run.sh                # 起動スクリプト（ターミナル用）
+├── run.command           # 起動ファイル（ダブルクリック用）
 ├── pyproject.toml        # プロジェクト設定
 ├── requirements-mac.txt  # Mac 用依存関係
 │
@@ -285,13 +294,13 @@ Qwen3-TTS-Mac-GeneLab/
 | `仮想環境が見つかりません` | conda 環境がアクティブでない | `source "$(conda info --base)/etc/profile.d/conda.sh" && conda activate qwen3-tts-mac-genelab` |
 | `RuntimeError: MPS backend` | MPS 未対応の操作 | `PYTORCH_ENABLE_MPS_FALLBACK=1` を設定（セットアップ済みなら不要） |
 | `Out of memory` | メモリ不足 | 他のアプリを閉じるか、量子化モデルを使用 |
-| `probability tensor contains inf` | Voice Clone で float16 使用 | PyTorch MPS が自動選択されているか確認 |
+| `probability tensor contains inf` | Voice Clone で float16 使用 | PyTorch (float32 CPU) が自動選択されているか確認 |
 
 ### Voice Clone の問題
 
 | エラー | 原因 | 解決策 |
 |--------|------|--------|
-| `'default'` エラー | 間違ったモデルタイプ | Base モデルが必要。自動でダウンロードされます |
+| `'default'` エラー | transformers バージョン非互換 | 本フォークでは互換パッチ適用済み。`pip install -e .` を再実行 |
 | 参照音声の認識失敗 | 音声が短すぎる/ノイズが多い | 3秒以上のクリアな音声を使用 |
 | 生成音声の品質が低い | 参照テキストが不正確 | Whisper の書き起こし結果を確認・修正 |
 
@@ -319,8 +328,8 @@ Qwen3-TTS-Mac-GeneLab/
 # MPS フォールバック (非対応操作を CPU で実行)
 export PYTORCH_ENABLE_MPS_FALLBACK=1
 
-# MPS メモリ上限 (70%)
-export PYTORCH_MPS_HIGH_WATERMARK_RATIO=0.7
+# MPS メモリ上限 (0.0=無制限、PyTorch 2.10+ 互換)
+export PYTORCH_MPS_HIGH_WATERMARK_RATIO=0.0
 
 # トークナイザーの並列化を無効化 (警告回避)
 export TOKENIZERS_PARALLELISM=false

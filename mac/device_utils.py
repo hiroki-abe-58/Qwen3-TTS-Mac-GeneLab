@@ -170,8 +170,8 @@ def get_environment_vars() -> dict[str, str]:
     env_vars = {
         # MPS のフォールバックを有効化
         "PYTORCH_ENABLE_MPS_FALLBACK": "1",
-        # MPS メモリ使用量の上限（0.0-1.0）
-        "PYTORCH_MPS_HIGH_WATERMARK_RATIO": "0.7",
+        # MPS メモリ使用量の上限（0.0=無制限、PyTorch 2.10+ では 0.7 だと low watermark 超過エラー）
+        "PYTORCH_MPS_HIGH_WATERMARK_RATIO": "0.0",
         # トークナイザーの並列処理を無効化（警告回避）
         "TOKENIZERS_PARALLELISM": "false",
     }

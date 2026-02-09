@@ -263,12 +263,6 @@ def create_app() -> gr.Blocks:
 
     with gr.Blocks(
         title="Qwen3-TTS-Mac-GeneLab",
-        css=CUSTOM_CSS,
-        theme=gr.themes.Soft(
-            primary_hue="blue",
-            secondary_hue="slate",
-            neutral_hue="slate",
-        ),
     ) as app:
         # ヘッダー
         create_header()
@@ -323,6 +317,12 @@ def main() -> None:
         server_port=args.port,
         share=args.share,
         show_error=True,
+        css=CUSTOM_CSS,
+        theme=gr.themes.Soft(
+            primary_hue="blue",
+            secondary_hue="slate",
+            neutral_hue="slate",
+        ),
     )
 
 
