@@ -114,6 +114,7 @@ def create_voice_design_tab() -> None:
                     value="Japanese",
                     label=t("custom_voice.language_selector.label"),
                     info=t("custom_voice.language_selector.info"),
+                    interactive=True,
                 )
 
                 speed_slider = gr.Slider(
@@ -123,6 +124,7 @@ def create_voice_design_tab() -> None:
                     step=0.1,
                     label=t("custom_voice.speed_slider.label"),
                     info=t("custom_voice.speed_slider.info"),
+                    interactive=True,
                 )
 
             generate_btn = gr.Button(

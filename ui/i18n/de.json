@@ -135,15 +135,15 @@
     }
   },
   "speakers": {
-    "Chelsie": { "local_name": "Chelsie", "description": "Helle junge Frauenstimme. Energisch und freundlich." },
-    "Ethan": { "local_name": "Ethan", "description": "Ruhige junge Mannerstimme. Entspannte Atmosphare." },
-    "Aiden": { "local_name": "Aiden", "description": "Reife Mannerstimme. Stabil und erfahren." },
-    "Bella": { "local_name": "Bella", "description": "Warme Frauenstimme. Sanft und umhullend." },
-    "Vivian": { "local_name": "Vivian", "description": "Energische Frauenstimme. Lebhaft und frohlich." },
-    "Lucas": { "local_name": "Lucas", "description": "Helle junge Mannerstimme. Frisch und freundlich." },
-    "Eleanor": { "local_name": "Eleanor", "description": "Elegante Frauenstimme. Ruhig und intellektuell." },
-    "Alexander": { "local_name": "Alexander", "description": "Kraftvolle Mannerstimme. Wurdevoll und stabil." },
-    "Serena": { "local_name": "Serena", "description": "Beruhigende Frauenstimme. Sanft und entspannend." }
+    "serena": { "local_name": "Serena", "description": "Beruhigende Frauenstimme. Ruhig und entspannend." },
+    "vivian": { "local_name": "Vivian", "description": "Energische Frauenstimme. Lebhaft und frohlich." },
+    "aiden": { "local_name": "Aiden", "description": "Reife Mannerstimme. Stabil und erfahren." },
+    "ryan": { "local_name": "Ryan", "description": "Ruhige Mannerstimme. Stabiler Erzahlstil." },
+    "eric": { "local_name": "Eric", "description": "Helle Mannerstimme. Frisch und freundlich." },
+    "dylan": { "local_name": "Dylan", "description": "Kraftvolle Mannerstimme. Wurdevoll und stabil." },
+    "ono_anna": { "local_name": "Ono Anna", "description": "Japanische Muttersprachlerin. Naturlich und warm." },
+    "sohee": { "local_name": "Sohee", "description": "Koreanische Muttersprachlerin. Sanft und zart." },
+    "uncle_fu": { "local_name": "Onkel Fu", "description": "Chinesischer Muttersprachler. Warm und gelassen." }
   },
   "languages": {
     "Japanese": "Japanisch", "English": "Englisch", "Chinese": "Chinesisch",

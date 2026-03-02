@@ -18,7 +18,7 @@ from typing import Any
 import gradio as gr
 import numpy as np
 
-from ui.i18n_utils import t
+from ui.i18n_utils import t, t_list
 
 logger = logging.getLogger(__name__)
 
@@ -133,6 +133,7 @@ def create_voice_clone_tab() -> None:
                     value="Japanese",
                     label=t("voice_clone.reference_language.label"),
                     scale=2,
+                    interactive=True,
                 )
                 transcribe_btn = gr.Button(
                     t("voice_clone.transcribe_button"),
@@ -162,6 +163,7 @@ def create_voice_clone_tab() -> None:
                     value="Japanese",
                     label=t("voice_clone.output_language.label"),
                     info=t("voice_clone.output_language.info"),
+                    interactive=True,
                 )
 
                 speed_slider = gr.Slider(
@@ -171,6 +173,7 @@ def create_voice_clone_tab() -> None:
                     step=0.1,
                     label=t("custom_voice.speed_slider.label"),
                     info=t("custom_voice.speed_slider.info"),
+                    interactive=True,
                 )
 
             generate_btn = gr.Button(
@@ -192,12 +195,8 @@ def create_voice_clone_tab() -> None:
                 lines=2,
             )
 
-            tips_items = "\n".join(f"- {item}" for item in (
-                t("voice_clone.tips.items.0", ""),
-                t("voice_clone.tips.items.1", ""),
-                t("voice_clone.tips.items.2", ""),
-                t("voice_clone.tips.items.3", ""),
-            ))
+            tips_list = t_list("voice_clone.tips.items")
+            tips_items = "\n".join(f"- {item}" for item in tips_list if item)
             gr.Markdown(f"#### {t('voice_clone.tips.title')}\n\n{tips_items}")
 
     gr.Examples(

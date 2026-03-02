@@ -135,15 +135,15 @@
     }
   },
   "speakers": {
-    "Chelsie": { "local_name": "Chelsie", "description": "Voz feminina jovem e brilhante. Energetica e amigavel." },
-    "Ethan": { "local_name": "Ethan", "description": "Voz masculina jovem e calma. Atmosfera relaxada." },
-    "Aiden": { "local_name": "Aiden", "description": "Voz masculina madura. Estavel e experiente." },
-    "Bella": { "local_name": "Bella", "description": "Voz feminina calorosa. Suave e acolhedora." },
-    "Vivian": { "local_name": "Vivian", "description": "Voz feminina energetica. Viva e alegre." },
-    "Lucas": { "local_name": "Lucas", "description": "Voz masculina jovem e brilhante. Fresca e amigavel." },
-    "Eleanor": { "local_name": "Eleanor", "description": "Voz feminina elegante. Calma e intelectual." },
-    "Alexander": { "local_name": "Alexander", "description": "Voz masculina poderosa. Digna e estavel." },
-    "Serena": { "local_name": "Serena", "description": "Voz feminina relaxante. Suave e tranquilizadora." }
+    "serena": { "local_name": "Serena", "description": "Voz feminina relaxante. Calma e tranquilizadora." },
+    "vivian": { "local_name": "Vivian", "description": "Voz feminina energetica. Viva e alegre." },
+    "aiden": { "local_name": "Aiden", "description": "Voz masculina madura. Estavel e experiente." },
+    "ryan": { "local_name": "Ryan", "description": "Voz masculina calma. Estilo de narracao estavel." },
+    "eric": { "local_name": "Eric", "description": "Voz masculina brilhante. Fresca e amigavel." },
+    "dylan": { "local_name": "Dylan", "description": "Voz masculina poderosa. Digna e estavel." },
+    "ono_anna": { "local_name": "Ono Anna", "description": "Voz feminina nativa japonesa. Natural e acolhedora." },
+    "sohee": { "local_name": "Sohee", "description": "Voz feminina nativa coreana. Suave e delicada." },
+    "uncle_fu": { "local_name": "Tio Fu", "description": "Voz masculina nativa chinesa. Calorosa e serena." }
   },
   "languages": {
     "Japanese": "Japones", "English": "Ingles", "Chinese": "Chines",

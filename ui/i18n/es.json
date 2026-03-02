@@ -135,15 +135,15 @@
     }
   },
   "speakers": {
-    "Chelsie": { "local_name": "Chelsie", "description": "Voz femenina joven y brillante. Energica y amigable." },
-    "Ethan": { "local_name": "Ethan", "description": "Voz masculina joven y tranquila. Atmosfera relajada." },
-    "Aiden": { "local_name": "Aiden", "description": "Voz masculina madura. Estable y experimentada." },
-    "Bella": { "local_name": "Bella", "description": "Voz femenina calida. Suave y acogedora." },
-    "Vivian": { "local_name": "Vivian", "description": "Voz femenina energica. Vivaz y alegre." },
-    "Lucas": { "local_name": "Lucas", "description": "Voz masculina joven y brillante. Fresca y amigable." },
-    "Eleanor": { "local_name": "Eleanor", "description": "Voz femenina elegante. Calmada e intelectual." },
-    "Alexander": { "local_name": "Alexander", "description": "Voz masculina poderosa. Digna y estable." },
-    "Serena": { "local_name": "Serena", "description": "Voz femenina relajante. Suave y tranquilizadora." }
+    "serena": { "local_name": "Serena", "description": "Voz femenina relajante. Calmada y tranquilizadora." },
+    "vivian": { "local_name": "Vivian", "description": "Voz femenina energetica. Vivaz y alegre." },
+    "aiden": { "local_name": "Aiden", "description": "Voz masculina madura. Estable y experimentada." },
+    "ryan": { "local_name": "Ryan", "description": "Voz masculina tranquila. Estilo de narracion sereno." },
+    "eric": { "local_name": "Eric", "description": "Voz masculina brillante. Fresca y amigable." },
+    "dylan": { "local_name": "Dylan", "description": "Voz masculina poderosa. Digna y estable." },
+    "ono_anna": { "local_name": "Ono Anna", "description": "Voz femenina nativa japonesa. Natural y calida." },
+    "sohee": { "local_name": "Sohee", "description": "Voz femenina nativa coreana. Suave y delicada." },
+    "uncle_fu": { "local_name": "Tio Fu", "description": "Voz masculina nativa china. Calida y serena." }
   },
   "languages": {
     "Japanese": "Japones", "English": "Ingles", "Chinese": "Chino",

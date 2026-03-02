@@ -135,42 +135,15 @@
     }
   },
   "speakers": {
-    "Chelsie": {
-      "local_name": "切尔西",
-      "description": "明亮的年轻女性声音。充满活力、亲切友好。"
-    },
-    "Ethan": {
-      "local_name": "伊桑",
-      "description": "温和的年轻男性声音。沉稳安静。"
-    },
-    "Aiden": {
-      "local_name": "艾登",
-      "description": "成熟的男性声音。稳重可靠。"
-    },
-    "Bella": {
-      "local_name": "贝拉",
-      "description": "温暖的女性声音。温柔包容。"
-    },
-    "Vivian": {
-      "local_name": "薇薇安",
-      "description": "充满活力的女性声音。活泼明快。"
-    },
-    "Lucas": {
-      "local_name": "卢卡斯",
-      "description": "明亮的年轻男性声音。清爽友好。"
-    },
-    "Eleanor": {
-      "local_name": "埃莉诺",
-      "description": "优雅的女性声音。沉稳知性。"
-    },
-    "Alexander": {
-      "local_name": "亚历山大",
-      "description": "有力量的男性声音。威严稳重。"
-    },
-    "Serena": {
-      "local_name": "塞琳娜",
-      "description": "治愈系女性声音。温和放松。"
-    }
+    "serena": { "local_name": "塞琳娜", "description": "舒缓的女性声音。沉稳放松。" },
+    "vivian": { "local_name": "薇薇安", "description": "充满活力的女性声音。活泼明快。" },
+    "aiden": { "local_name": "艾登", "description": "成熟的男性声音。稳重可靠。" },
+    "ryan": { "local_name": "瑞恩", "description": "沉稳的男性声音。稳定的叙述风格。" },
+    "eric": { "local_name": "埃里克", "description": "明亮的男性声音。清爽友好。" },
+    "dylan": { "local_name": "迪伦", "description": "有力的男性声音。威严稳重。" },
+    "ono_anna": { "local_name": "小野安娜", "description": "日语母语女性声音。自然温暖。" },
+    "sohee": { "local_name": "素熙", "description": "韩语母语女性声音。柔和亲切。" },
+    "uncle_fu": { "local_name": "傅叔叔", "description": "中文母语男性声音。温和沉着。" }
   },
   "languages": {
     "Japanese": "日语",

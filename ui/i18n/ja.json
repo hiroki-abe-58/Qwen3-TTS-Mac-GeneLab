@@ -135,15 +135,15 @@
     }
   },
   "speakers": {
-    "Chelsie": { "local_name": "チェルシー", "description": "明るい若い女性の声。エネルギッシュで親しみやすい。" },
-    "Ethan": { "local_name": "イーサン", "description": "穏やかな若い男性の声。落ち着いた雰囲気。" },
-    "Aiden": { "local_name": "エイデン", "description": "渋みのある男性の声。成熟した安定感。" },
-    "Bella": { "local_name": "ベラ", "description": "温かみのある女性の声。優しく包み込む雰囲気。" },
-    "Vivian": { "local_name": "ヴィヴィアン", "description": "エネルギッシュな女性の声。活発で明るい。" },
-    "Lucas": { "local_name": "ルーカス", "description": "明るい若い男性の声。爽やかで親しみやすい。" },
-    "Eleanor": { "local_name": "エレノア", "description": "上品な女性の声。落ち着いた知的な雰囲気。" },
-    "Alexander": { "local_name": "アレクサンダー", "description": "力強い男性の声。威厳と安定感。" },
-    "Serena": { "local_name": "セレナ", "description": "癒やしの女性の声。穏やかでリラックス。" }
+    "serena": { "local_name": "セレナ", "description": "癒やしの女性の声。穏やかでリラックス。" },
+    "vivian": { "local_name": "ヴィヴィアン", "description": "エネルギッシュな女性の声。活発で明るい。" },
+    "aiden": { "local_name": "エイデン", "description": "渋みのある男性の声。成熟した安定感。" },
+    "ryan": { "local_name": "ライアン", "description": "落ち着いた男性の声。安定感のあるナレーション向き。" },
+    "eric": { "local_name": "エリック", "description": "明るい男性の声。爽やかで親しみやすい。" },
+    "dylan": { "local_name": "ディラン", "description": "力強い男性の声。威厳と安定感。" },
+    "ono_anna": { "local_name": "おの あんな", "description": "日本語ネイティブの女性の声。自然で温かい。" },
+    "sohee": { "local_name": "ソヒ", "description": "韓国語ネイティブの女性の声。柔らかく優しい。" },
+    "uncle_fu": { "local_name": "フーおじさん", "description": "中国語ネイティブの男性の声。温かみのある落ち着いた声。" }
   },
   "languages": {
     "Japanese": "日本語",

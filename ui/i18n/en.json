@@ -135,15 +135,15 @@
     }
   },
   "speakers": {
-    "Chelsie": { "local_name": "Chelsie", "description": "Bright young female voice. Energetic and friendly." },
-    "Ethan": { "local_name": "Ethan", "description": "Calm young male voice. Relaxed atmosphere." },
-    "Aiden": { "local_name": "Aiden", "description": "Mature male voice. Stable and seasoned." },
-    "Bella": { "local_name": "Bella", "description": "Warm female voice. Gentle and embracing." },
-    "Vivian": { "local_name": "Vivian", "description": "Energetic female voice. Lively and bright." },
-    "Lucas": { "local_name": "Lucas", "description": "Bright young male voice. Fresh and friendly." },
-    "Eleanor": { "local_name": "Eleanor", "description": "Elegant female voice. Calm and intellectual." },
-    "Alexander": { "local_name": "Alexander", "description": "Powerful male voice. Dignified and stable." },
-    "Serena": { "local_name": "Serena", "description": "Soothing female voice. Calm and relaxing." }
+    "serena": { "local_name": "Serena", "description": "Soothing female voice. Calm and relaxing." },
+    "vivian": { "local_name": "Vivian", "description": "Energetic female voice. Lively and bright." },
+    "aiden": { "local_name": "Aiden", "description": "Mature male voice. Stable and seasoned." },
+    "ryan": { "local_name": "Ryan", "description": "Calm male voice. Steady narration style." },
+    "eric": { "local_name": "Eric", "description": "Bright male voice. Fresh and friendly." },
+    "dylan": { "local_name": "Dylan", "description": "Powerful male voice. Dignified and stable." },
+    "ono_anna": { "local_name": "Ono Anna", "description": "Native Japanese female voice. Natural and warm." },
+    "sohee": { "local_name": "Sohee", "description": "Native Korean female voice. Soft and gentle." },
+    "uncle_fu": { "local_name": "Uncle Fu", "description": "Native Chinese male voice. Warm and composed." }
   },
   "languages": {
     "Japanese": "Japanese",

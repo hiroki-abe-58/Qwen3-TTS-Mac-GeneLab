@@ -23,7 +23,6 @@ import logging
 import time
 from dataclasses import dataclass, field
 from enum import Enum
-from pathlib import Path
 from typing import Any, Callable
 
 import numpy as np
@@ -70,15 +69,35 @@ class EngineStatus:
 
 
 class MLXEngine:
-    """MLX ベースの TTS エンジン（mlx-audio 使用）"""
+    """MLX ベースの TTS エンジン（mlx-audio 使用）
+
+    新旧両方の mlx-audio API に自動対応:
+    - Modern API (>=0.3.x): load_model() → nn.Module, model.generate() ジェネレータ
+    - Legacy API (<0.3.x): load_model() → (model, processor), 外部 generate() 関数
+    """
+
+    _LANG_MAP: dict[str, str] = {
+        "japanese": "japanese",
+        "english": "english",
+        "chinese": "chinese",
+        "korean": "korean",
+        "french": "french",
+        "german": "german",
+        "spanish": "spanish",
+        "italian": "italian",
+        "portuguese": "portuguese",
+        "russian": "russian",
+    }
 
     def __init__(self) -> None:
         self._model: Any = None
         self._processor: Any = None
         self._model_name: str | None = None
         self._mlx_available: bool = False
+        self._use_legacy_api: bool = False
+        self._generate_fn: Any = None
+        self._supported_speakers: list[str] = []
 
-        # MLX 利用可能性をチェック
         try:
             import mlx.core as mx  # noqa: F401
             self._mlx_available = True
@@ -88,23 +107,43 @@ class MLXEngine:
 
     @property
     def is_available(self) -> bool:
-        """MLX が利用可能かどうか"""
         return self._mlx_available
 
     @property
     def is_loaded(self) -> bool:
-        """モデルがロードされているかどうか"""
         return self._model is not None
+
+    @property
+    def supported_speakers(self) -> list[str]:
+        return self._supported_speakers
+
+    def _to_lang_code(self, language: str) -> str:
+        return self._LANG_MAP.get(language.lower(), "auto")
+
+    def _resolve_speaker(self, speaker: str) -> str:
+        """UI のスピーカー名をモデルが受け付ける名前に解決する。"""
+        if not self._supported_speakers:
+            return speaker.lower()
+
+        lower = speaker.lower()
+        if lower in self._supported_speakers:
+            return lower
+
+        for s in self._supported_speakers:
+            if s == speaker:
+                return s
+
+        logger.warning(
+            f"スピーカー '{speaker}' が見つかりません。"
+            f"利用可能: {self._supported_speakers} → 先頭を使用"
+        )
+        return self._supported_speakers[0]
 
     def load_model(
         self,
         model_name: str = "mlx-community/Qwen3-TTS-12Hz-1.7B-CustomVoice-8bit",
     ) -> None:
-        """MLX モデルをロードする。
-
-        Args:
-            model_name: HuggingFace モデル名またはローカルパス
-        """
+        """MLX モデルをロードする。新旧両方の mlx-audio API に自動対応。"""
         if not self._mlx_available:
             raise RuntimeError("MLX が利用できません。")
 
@@ -112,7 +151,6 @@ class MLXEngine:
             logger.info(f"モデル '{model_name}' は既にロードされています。")
             return
 
-        # 既存モデルをアンロード
         if self._model is not None:
             self.unload()
 
@@ -120,13 +158,33 @@ class MLXEngine:
         start_time = time.time()
 
         try:
-            from mlx_audio.tts import generate as mlx_generate
             from mlx_audio.tts.utils import load_model as mlx_load_model
 
-            self._model, self._processor = mlx_load_model(model_name)
-            self._model_name = model_name
-            self._generate_fn = mlx_generate
+            loaded = mlx_load_model(model_name)
 
+            if isinstance(loaded, tuple):
+                # Legacy API: (model, processor) を返す旧バージョン
+                self._model, self._processor = loaded
+                self._use_legacy_api = True
+                try:
+                    from mlx_audio.tts import generate as gen_module
+                    self._generate_fn = gen_module
+                except ImportError:
+                    self._generate_fn = None
+                logger.info("MLX Legacy API を使用します。")
+            else:
+                # Modern API: 単一の nn.Module を返す
+                self._model = loaded
+                self._processor = None
+                self._use_legacy_api = False
+                self._generate_fn = None
+
+            # サポートスピーカーを取得
+            if hasattr(self._model, "get_supported_speakers"):
+                self._supported_speakers = self._model.get_supported_speakers()
+                logger.info(f"MLX サポートスピーカー: {self._supported_speakers}")
+
+            self._model_name = model_name
             elapsed = time.time() - start_time
             logger.info(f"MLX モデルのロード完了: {elapsed:.2f}秒")
 
@@ -144,29 +202,47 @@ class MLXEngine:
         speed: float = 1.0,
         progress_callback: Callable[[float], None] | None = None,
     ) -> tuple[np.ndarray, int]:
-        """音声を生成する。
-
-        Args:
-            text: 読み上げるテキスト
-            language: 言語 (Japanese, English, etc.)
-            speaker: スピーカー名（CustomVoice 用）
-            emotion: 感情指示（オプション）
-            voice_description: ボイスデザイン記述（オプション）
-            speed: 速度（0.5-2.0）
-            progress_callback: 進捗コールバック（0.0-1.0）
-
-        Returns:
-            tuple[np.ndarray, int]: (音声データ, サンプルレート)
-        """
+        """音声を生成する。新旧両API に対応。"""
         if not self.is_loaded:
             raise RuntimeError("モデルがロードされていません。先に load_model() を呼んでください。")
 
-        logger.info(f"MLX で音声生成中: '{text[:50]}...' (言語: {language}, 話者: {speaker})")
+        lang_code = self._to_lang_code(language)
+        resolved_speaker = self._resolve_speaker(speaker)
+        logger.info(
+            f"MLX で音声生成中: '{text[:50]}...' "
+            f"(lang_code: {lang_code}, voice: {resolved_speaker})"
+        )
 
         try:
-            # mlx-audio の generate 関数を使用
-            # 注: 実際の API は mlx-audio のバージョンによって異なる場合があります
-            audio = self._generate_fn(
+            if self._use_legacy_api:
+                return self._generate_legacy(
+                    text, language, resolved_speaker, emotion,
+                    voice_description, speed,
+                )
+            return self._generate_modern(
+                text, lang_code, resolved_speaker, emotion,
+                voice_description, speed,
+            )
+        except Exception as e:
+            logger.error(f"MLX 音声生成エラー: {e}")
+            raise
+
+    def _generate_legacy(
+        self,
+        text: str,
+        language: str,
+        speaker: str,
+        emotion: str | None,
+        voice_description: str | None,
+        speed: float,
+    ) -> tuple[np.ndarray, int]:
+        """Legacy API (mlx-audio <0.3.x) で音声を生成する。"""
+        if self._generate_fn is None:
+            raise RuntimeError("Legacy generate 関数が利用できません。")
+
+        gen_fn = getattr(self._generate_fn, "generate", self._generate_fn)
+        if callable(gen_fn):
+            audio = gen_fn(
                 self._model,
                 self._processor,
                 text,
@@ -174,21 +250,57 @@ class MLXEngine:
                 speaker=speaker,
                 verbose=False,
             )
+        else:
+            raise RuntimeError("mlx-audio の generate 関数が見つかりません。")
 
-            # サンプルレートは通常 24000Hz
-            sample_rate = 24000
+        sample_rate = 24000
+        if hasattr(audio, "tolist"):
+            audio = np.array(audio.tolist(), dtype=np.float32)
+        elif not isinstance(audio, np.ndarray):
+            audio = np.array(audio, dtype=np.float32)
 
-            # numpy 配列に変換
-            if hasattr(audio, "tolist"):
-                audio = np.array(audio.tolist(), dtype=np.float32)
-            elif not isinstance(audio, np.ndarray):
-                audio = np.array(audio, dtype=np.float32)
+        return audio, sample_rate
 
-            return audio, sample_rate
+    def _generate_modern(
+        self,
+        text: str,
+        lang_code: str,
+        speaker: str,
+        emotion: str | None,
+        voice_description: str | None,
+        speed: float,
+    ) -> tuple[np.ndarray, int]:
+        """Modern API (mlx-audio >=0.3.x) で音声を生成する。"""
+        instruct = emotion or voice_description or None
 
-        except Exception as e:
-            logger.error(f"MLX 音声生成エラー: {e}")
-            raise
+        gen_kwargs: dict[str, Any] = {
+            "text": text,
+            "voice": speaker,
+            "lang_code": lang_code,
+            "speed": speed,
+            "verbose": False,
+        }
+        if instruct:
+            gen_kwargs["instruct"] = instruct
+
+        audio_chunks: list[np.ndarray] = []
+        sample_rate = getattr(self._model, "sample_rate", 24000)
+
+        for result in self._model.generate(**gen_kwargs):
+            chunk = result.audio
+            if hasattr(chunk, "tolist"):
+                chunk = np.array(chunk.tolist(), dtype=np.float32)
+            elif not isinstance(chunk, np.ndarray):
+                chunk = np.array(chunk, dtype=np.float32)
+            audio_chunks.append(chunk)
+            if hasattr(result, "sample_rate") and result.sample_rate:
+                sample_rate = result.sample_rate
+
+        if not audio_chunks:
+            raise RuntimeError("音声が生成されませんでした。")
+
+        audio = np.concatenate(audio_chunks) if len(audio_chunks) > 1 else audio_chunks[0]
+        return audio, sample_rate
 
     def unload(self) -> None:
         """モデルをアンロードしてメモリを解放する。"""
@@ -199,11 +311,16 @@ class MLXEngine:
             self._model = None
             self._processor = None
             self._model_name = None
+            self._use_legacy_api = False
+            self._generate_fn = None
+            self._supported_speakers = []
 
-            # MLX キャッシュクリア
             try:
                 import mlx.core as mx
-                mx.metal.clear_cache()
+                if hasattr(mx, "clear_cache"):
+                    mx.clear_cache()
+                elif hasattr(mx, "metal") and hasattr(mx.metal, "clear_cache"):
+                    mx.metal.clear_cache()
             except Exception:
                 pass
 
@@ -211,7 +328,6 @@ class MLXEngine:
             logger.info("MLX モデルのアンロード完了")
 
     def get_status(self) -> EngineStatus:
-        """エンジンの状態を取得する。"""
         return EngineStatus(
             engine_type=EngineType.MLX,
             is_loaded=self.is_loaded,
@@ -538,6 +654,14 @@ class PyTorchMPSEngine:
         )
 
 
+# タスクタイプ → MLX モデルの対応表
+_MLX_MODEL_MAP: dict[TaskType, str] = {
+    TaskType.CUSTOM_VOICE: "mlx-community/Qwen3-TTS-12Hz-1.7B-CustomVoice-8bit",
+    TaskType.VOICE_DESIGN: "mlx-community/Qwen3-TTS-12Hz-1.7B-VoiceDesign-8bit",
+    TaskType.VOICE_CLONE: "mlx-community/Qwen3-TTS-12Hz-1.7B-Base-8bit",
+}
+
+
 class DualEngine:
     """デュアルエンジンマネージャー（シングルトン）
 
@@ -590,12 +714,12 @@ class DualEngine:
             return self._pytorch_engine
 
         # AUTO モード
-        # Voice Clone は PyTorch MPS を優先（float32 必須）
+        # Voice Clone は PyTorch MPS（float32 必須）
         if task_type == TaskType.VOICE_CLONE:
             logger.info("Voice Clone: PyTorch MPS を使用します（float32 必須）。")
             return self._pytorch_engine
 
-        # CustomVoice / VoiceDesign は MLX 優先
+        # CustomVoice / VoiceDesign は MLX 優先（高速）
         if self._mlx_engine.is_available:
             logger.info(f"{task_type.value}: MLX を使用します（高速）。")
             return self._mlx_engine
@@ -620,10 +744,13 @@ class DualEngine:
         if self._current_engine is not None and self._current_engine is not engine:
             self._current_engine.unload()
 
-        # モデルをロード (model_name が None の場合、各エンジンがタスクに応じて自動選択)
+        # モデルをロード (model_name が None の場合、タスクに応じて自動選択)
         if isinstance(engine, MLXEngine):
             if model_name is None:
-                model_name = "mlx-community/Qwen3-TTS-12Hz-1.7B-CustomVoice-8bit"
+                model_name = _MLX_MODEL_MAP.get(
+                    task_type,
+                    "mlx-community/Qwen3-TTS-12Hz-1.7B-CustomVoice-8bit",
+                )
             engine.load_model(model_name)
         else:
             # PyTorch エンジンは model_name=None の場合、タスクタイプに応じて自動選択
@@ -662,9 +789,20 @@ class DualEngine:
         Returns:
             GenerationResult: 生成結果
         """
-        # モデルが未ロードならロード
+        # エンジン選択とモデルロード
         engine = self._select_engine(task_type)
-        if not engine.is_loaded:
+
+        # MLX の場合、タスクタイプごとに異なるモデルが必要
+        required_model = _MLX_MODEL_MAP.get(task_type)
+        needs_reload = (
+            not engine.is_loaded
+            or (
+                isinstance(engine, MLXEngine)
+                and required_model
+                and engine._model_name != required_model
+            )
+        )
+        if needs_reload:
             self.load_model(task_type=task_type)
             engine = self._current_engine
 

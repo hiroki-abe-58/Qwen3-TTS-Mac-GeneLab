@@ -135,15 +135,15 @@
     }
   },
   "speakers": {
-    "Chelsie": { "local_name": "Chelsie", "description": "Voix feminine jeune et brillante. Energique et amicale." },
-    "Ethan": { "local_name": "Ethan", "description": "Voix masculine jeune et calme. Atmosphere detendue." },
-    "Aiden": { "local_name": "Aiden", "description": "Voix masculine mature. Stable et experimentee." },
-    "Bella": { "local_name": "Bella", "description": "Voix feminine chaleureuse. Douce et enveloppante." },
-    "Vivian": { "local_name": "Vivian", "description": "Voix feminine energique. Vive et joyeuse." },
-    "Lucas": { "local_name": "Lucas", "description": "Voix masculine jeune et brillante. Fraiche et amicale." },
-    "Eleanor": { "local_name": "Eleanor", "description": "Voix feminine elegante. Calme et intellectuelle." },
-    "Alexander": { "local_name": "Alexander", "description": "Voix masculine puissante. Digne et stable." },
-    "Serena": { "local_name": "Serena", "description": "Voix feminine apaisante. Douce et relaxante." }
+    "serena": { "local_name": "Serena", "description": "Voix feminine apaisante. Calme et relaxante." },
+    "vivian": { "local_name": "Vivian", "description": "Voix feminine energique. Vive et joyeuse." },
+    "aiden": { "local_name": "Aiden", "description": "Voix masculine mature. Stable et experimentee." },
+    "ryan": { "local_name": "Ryan", "description": "Voix masculine calme. Style de narration assure." },
+    "eric": { "local_name": "Eric", "description": "Voix masculine brillante. Fraiche et amicale." },
+    "dylan": { "local_name": "Dylan", "description": "Voix masculine puissante. Digne et stable." },
+    "ono_anna": { "local_name": "Ono Anna", "description": "Voix feminine native japonaise. Naturelle et chaleureuse." },
+    "sohee": { "local_name": "Sohee", "description": "Voix feminine native coreenne. Douce et delicate." },
+    "uncle_fu": { "local_name": "Oncle Fu", "description": "Voix masculine native chinoise. Chaude et posee." }
   },
   "languages": {
     "Japanese": "Japonais", "English": "Anglais", "Chinese": "Chinois",

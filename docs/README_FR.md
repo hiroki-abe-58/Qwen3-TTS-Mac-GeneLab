@@ -25,6 +25,14 @@
   <a href="README_PT.md">Português</a>
 </p>
 
+<p align="center">
+  <a href="https://github.com/hiroki-abe-58/Qwen3-TTS-Mac-GeneLab/stargazers">
+    <img src="../assets/star.gif" alt="Star this repo!" width="580">
+  </a>
+  <br>
+  <sub>Si ce projet vous est utile, pensez à lui donner une étoile — cela aide beaucoup !</sub>
+</p>
+
 ---
 
 ## Pourquoi Qwen3-TTS-Mac-GeneLab ?
@@ -65,6 +73,8 @@
 | OS | macOS 14 Sonoma | macOS 15 Sequoia |
 | Python | 3.10 | 3.11 |
 | Espace libre | 10GB | 20GB+ |
+
+> **Vous cherchez la version Windows ?** Consultez [Qwen3-TTS-JP](https://github.com/hiroki-abe-58/Qwen3-TTS-JP) — version native Windows avec support GPU NVIDIA (testé avec RTX 5090).
 
 ---
 

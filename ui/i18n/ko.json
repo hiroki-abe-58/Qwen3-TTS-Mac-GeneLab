@@ -135,42 +135,15 @@
     }
   },
   "speakers": {
-    "Chelsie": {
-      "local_name": "첼시",
-      "description": "밝은 젊은 여성 목소리. 활기차고 친근함."
-    },
-    "Ethan": {
-      "local_name": "이든",
-      "description": "차분한 젊은 남성 목소리. 편안한 분위기."
-    },
-    "Aiden": {
-      "local_name": "에이든",
-      "description": "성숙한 남성 목소리. 안정적이고 깊이 있음."
-    },
-    "Bella": {
-      "local_name": "벨라",
-      "description": "따뜻한 여성 목소리. 부드럽고 포용적."
-    },
-    "Vivian": {
-      "local_name": "비비안",
-      "description": "활기찬 여성 목소리. 활발하고 밝음."
-    },
-    "Lucas": {
-      "local_name": "루카스",
-      "description": "밝은 젊은 남성 목소리. 상쾌하고 친근함."
-    },
-    "Eleanor": {
-      "local_name": "엘리너",
-      "description": "우아한 여성 목소리. 차분하고 지적."
-    },
-    "Alexander": {
-      "local_name": "알렉산더",
-      "description": "힘있는 남성 목소리. 위엄과 안정감."
-    },
-    "Serena": {
-      "local_name": "세레나",
-      "description": "치유의 여성 목소리. 부드럽고 편안함."
-    }
+    "serena": { "local_name": "세레나", "description": "편안한 여성 목소리. 차분하고 릴렉스." },
+    "vivian": { "local_name": "비비안", "description": "활기찬 여성 목소리. 활발하고 밝음." },
+    "aiden": { "local_name": "에이든", "description": "성숙한 남성 목소리. 안정적이고 깊이 있음." },
+    "ryan": { "local_name": "라이언", "description": "차분한 남성 목소리. 안정적인 나레이션 스타일." },
+    "eric": { "local_name": "에릭", "description": "밝은 남성 목소리. 상쾌하고 친근함." },
+    "dylan": { "local_name": "딜런", "description": "힘있는 남성 목소리. 위엄과 안정감." },
+    "ono_anna": { "local_name": "오노 안나", "description": "일본어 네이티브 여성 목소리. 자연스럽고 따뜻함." },
+    "sohee": { "local_name": "소희", "description": "한국어 네이티브 여성 목소리. 부드럽고 온화함." },
+    "uncle_fu": { "local_name": "푸 아저씨", "description": "중국어 네이티브 남성 목소리. 따뜻하고 차분함." }
   },
   "languages": {
     "Japanese": "일본어",

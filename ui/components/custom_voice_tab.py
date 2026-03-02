@@ -22,10 +22,10 @@ from ui.i18n_utils import t
 
 logger = logging.getLogger(__name__)
 
-# スピーカー名一覧（キーのみ。表示名・説明は i18n から取得）
+# スピーカー名一覧（MLX 8bit モデル準拠。表示名・説明は i18n から取得）
 SPEAKER_KEYS = [
-    "Chelsie", "Ethan", "Aiden", "Bella", "Vivian",
-    "Lucas", "Eleanor", "Alexander", "Serena",
+    "serena", "vivian", "aiden", "ryan", "eric",
+    "dylan", "ono_anna", "sohee", "uncle_fu",
 ]
 
 # TTS エンジン用言語キー（値は固定英語キー）
@@ -65,8 +65,8 @@ def _emotion_choices() -> list[tuple[str, str]]:
 
 def extract_speaker_name(selection: str) -> str:
     """選択文字列からスピーカー名を抽出する。"""
-    match = re.search(r"（(\w+)）", selection)
-    return match.group(1) if match else "Chelsie"
+    match = re.search(r"（([\w_]+)）", selection)
+    return match.group(1) if match else "serena"
 
 
 def generate_audio(
@@ -139,6 +139,7 @@ def create_custom_voice_tab() -> None:
                     value="Japanese",
                     label=t("custom_voice.language_selector.label"),
                     info=t("custom_voice.language_selector.info"),
+                    interactive=True,
                 )
 
                 emotion_selector = gr.Dropdown(
@@ -146,6 +147,7 @@ def create_custom_voice_tab() -> None:
                     value="neutral",
                     label=t("custom_voice.emotion_selector.label"),
                     info=t("custom_voice.emotion_selector.info"),
+                    interactive=True,
                 )
 
             speed_slider = gr.Slider(
@@ -155,6 +157,7 @@ def create_custom_voice_tab() -> None:
                 step=0.1,
                 label=t("custom_voice.speed_slider.label"),
                 info=t("custom_voice.speed_slider.info"),
+                interactive=True,
             )
 
             generate_btn = gr.Button(

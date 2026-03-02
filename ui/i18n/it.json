@@ -135,15 +135,15 @@
     }
   },
   "speakers": {
-    "Chelsie": { "local_name": "Chelsie", "description": "Voce femminile giovane e brillante. Energica e amichevole." },
-    "Ethan": { "local_name": "Ethan", "description": "Voce maschile giovane e calma. Atmosfera rilassata." },
-    "Aiden": { "local_name": "Aiden", "description": "Voce maschile matura. Stabile e autorevole." },
-    "Bella": { "local_name": "Bella", "description": "Voce femminile calda. Dolce e accogliente." },
-    "Vivian": { "local_name": "Vivian", "description": "Voce femminile energica. Vivace e allegra." },
-    "Lucas": { "local_name": "Lucas", "description": "Voce maschile giovane e brillante. Fresca e amichevole." },
-    "Eleanor": { "local_name": "Eleanor", "description": "Voce femminile elegante. Calma e intellettuale." },
-    "Alexander": { "local_name": "Alexander", "description": "Voce maschile potente. Dignitosa e stabile." },
-    "Serena": { "local_name": "Serena", "description": "Voce femminile rilassante. Dolce e tranquillizzante." }
+    "serena": { "local_name": "Serena", "description": "Voce femminile rilassante. Calma e rasserenante." },
+    "vivian": { "local_name": "Vivian", "description": "Voce femminile energica. Vivace e allegra." },
+    "aiden": { "local_name": "Aiden", "description": "Voce maschile matura. Stabile e autorevole." },
+    "ryan": { "local_name": "Ryan", "description": "Voce maschile calma. Stile di narrazione stabile." },
+    "eric": { "local_name": "Eric", "description": "Voce maschile brillante. Fresca e amichevole." },
+    "dylan": { "local_name": "Dylan", "description": "Voce maschile potente. Dignitosa e stabile." },
+    "ono_anna": { "local_name": "Ono Anna", "description": "Voce femminile madrelingua giapponese. Naturale e calda." },
+    "sohee": { "local_name": "Sohee", "description": "Voce femminile madrelingua coreana. Dolce e delicata." },
+    "uncle_fu": { "local_name": "Zio Fu", "description": "Voce maschile madrelingua cinese. Calda e composta." }
   },
   "languages": {
     "Japanese": "Giapponese", "English": "Inglese", "Chinese": "Cinese",
