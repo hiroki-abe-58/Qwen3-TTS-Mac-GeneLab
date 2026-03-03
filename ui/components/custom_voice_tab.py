@@ -43,13 +43,14 @@ EMOTION_KEYS = [
 ]
 
 
-def _speaker_choices() -> list[str]:
-    """i18n を使ったスピーカー選択肢リストを生成する。"""
-    choices = []
+def _speaker_choices() -> list[tuple[str, str]]:
+    """i18n を使ったスピーカー選択肢 (表示名, キー) を生成する。"""
+    choices: list[tuple[str, str]] = []
     for key in SPEAKER_KEYS:
         local = t(f"speakers.{key}.local_name", key)
         desc = t(f"speakers.{key}.description", "")
-        choices.append(f"{local}（{key}）- {desc}")
+        label = f"{local} - {desc}" if desc else local
+        choices.append((label, key))
     return choices
 
 
@@ -64,7 +65,9 @@ def _emotion_choices() -> list[tuple[str, str]]:
 
 
 def extract_speaker_name(selection: str) -> str:
-    """選択文字列からスピーカー名を抽出する。"""
+    """選択値からスピーカー名を返す。Dropdown の tuple 形式ではキーがそのまま渡される。"""
+    if selection in SPEAKER_KEYS:
+        return selection
     match = re.search(r"（([\w_]+)）", selection)
     return match.group(1) if match else "serena"
 
@@ -125,12 +128,12 @@ def create_custom_voice_tab() -> None:
                 max_lines=10,
             )
 
-            speaker_choices = _speaker_choices()
-            speaker_selector = gr.Radio(
-                choices=speaker_choices,
-                value=speaker_choices[0],
+            speaker_selector = gr.Dropdown(
+                choices=_speaker_choices(),
+                value=SPEAKER_KEYS[0],
                 label=t("custom_voice.speaker_selector.label"),
                 info=t("custom_voice.speaker_selector.info"),
+                interactive=True,
             )
 
             with gr.Row():
