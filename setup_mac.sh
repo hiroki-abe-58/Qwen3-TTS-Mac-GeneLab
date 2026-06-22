@@ -239,7 +239,8 @@ log_info "MLX をインストール中..."
 pip install mlx mlx-lm
 
 log_info "mlx-audio をインストール中..."
-pip install mlx-audio
+# mlx-audio 0.4.x は huggingface_hub>=1.0 要求で transformers 4.x と非互換 (Issue #1)
+pip install "mlx-audio>=0.3,<0.4" "huggingface-hub<1.0"
 
 # =============================================================================
 # Step 6: 追加依存関係のインストール

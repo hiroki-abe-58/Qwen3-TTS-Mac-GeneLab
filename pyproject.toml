@@ -40,7 +40,9 @@ dependencies = [
 mac = [
   "mlx>=0.10.0",
   "mlx-lm>=0.10.0",
-  "mlx-audio>=0.3.0",
+  # mlx-audio 0.4.x は huggingface_hub>=1.0 要求で transformers 4.x と非互換 (Issue #1)
+  "mlx-audio>=0.3,<0.4",
+  "huggingface-hub<1.0",
 ]
 dev = [
   "pytest>=7.0.0",

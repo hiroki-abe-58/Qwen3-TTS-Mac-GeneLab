@@ -11,9 +11,15 @@ torchaudio
 # ======================
 # MLX (Apple Silicon Native)
 # ======================
+# mlx-audio 0.4.x は huggingface_hub>=1.0 を要求し、transformers 4.x
+# (hub<1.0) と両立できないため上限を固定する。動作確認済み: 0.3.1 (Issue #1)
 mlx>=0.10.0
 mlx-lm>=0.10.0
-mlx-audio>=0.3.0
+mlx-audio>=0.3,<0.4
+
+# huggingface_hub は transformers 4.x / mlx-audio 0.3.x と整合する 0.x 系に固定。
+# (1.x は mlx-audio 0.4.x 経由で transformers 5.x を呼び込み破壊する)
+huggingface-hub<1.0
 
 # ======================
 # Transformers & NLP
