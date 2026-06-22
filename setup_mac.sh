@@ -254,7 +254,8 @@ log_info "音声処理ライブラリをインストール中..."
 pip install librosa soundfile einops
 
 log_info "UI / ユーティリティをインストール中..."
-pip install psutil "gradio>=4.0"
+# gradio 6.6+ はキュー(fn_index)処理が非互換で KeyError を起こすため上限固定 (Issue #1)
+pip install psutil "gradio>=6.0,<6.6"
 
 log_info "numpy バージョンを調整中 (MPS 互換性のため)..."
 pip install "numpy<2"

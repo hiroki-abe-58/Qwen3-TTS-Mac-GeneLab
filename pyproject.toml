@@ -25,7 +25,7 @@ authors = [
 dependencies = [
   "transformers>=4.51,<5.0",
   "accelerate>=1.0.0",
-  "gradio>=4.0.0",
+  "gradio>=6.0,<6.6",
   "librosa>=0.10.0",
   "torchaudio",
   "soundfile>=0.12.0",
