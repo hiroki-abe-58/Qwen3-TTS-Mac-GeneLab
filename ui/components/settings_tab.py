@@ -132,7 +132,7 @@ def create_settings_tab() -> None:
         with gr.Column(scale=1):
             gr.Markdown(f"## {t('settings.engine.title')}")
 
-            engine_selector = gr.Radio(
+            engine_selector = gr.Dropdown(
                 choices=[
                     (t("settings.engine.selector.options.auto"), "auto"),
                     (t("settings.engine.selector.options.mlx"), "mlx"),
@@ -141,6 +141,7 @@ def create_settings_tab() -> None:
                 value="auto",
                 label=t("settings.engine.selector.label"),
                 info=t("settings.engine.selector.info"),
+                interactive=True,
             )
 
             engine_status_btn = gr.Button(t("settings.engine.status_button"), variant="secondary")
