@@ -71,6 +71,65 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 
+def _parse_major_minor(version: str) -> tuple[int, int]:
+    """'4.57.6' のようなバージョン文字列から (major, minor) を取り出す。"""
+    parts = version.split(".")
+    try:
+        major = int(parts[0])
+    except (IndexError, ValueError):
+        major = 0
+    try:
+        minor = int(parts[1]) if len(parts) > 1 else 0
+    except ValueError:
+        minor = 0
+    return major, minor
+
+
+def check_dependency_versions() -> None:
+    """非互換な依存バージョンを検知して明確な復旧手順を提示する (Issue #1)。
+
+    - transformers 5.x: check_model_inputs() のシグネチャ変更で
+      PyTorch モデルロードが全滅する。
+    - gradio 6.6+: キュー (fn_index) 処理が非互換で KeyError を起こす。
+    """
+    problems: list[str] = []
+
+    try:
+        import transformers
+
+        tf_major, _ = _parse_major_minor(transformers.__version__)
+        if tf_major >= 5:
+            problems.append(
+                f"transformers {transformers.__version__} は非対応です "
+                "(5.x は API 破壊的変更により Voice Clone 等が失敗します)。"
+                "対応: >=4.51,<5.0"
+            )
+    except ImportError:
+        pass
+
+    try:
+        gr_major, gr_minor = _parse_major_minor(gr.__version__)
+        if (gr_major, gr_minor) >= (6, 6):
+            problems.append(
+                f"gradio {gr.__version__} は非対応です "
+                "(6.6+ はキュー処理が非互換で KeyError を起こします)。"
+                "対応: >=6.0,<6.6"
+            )
+    except Exception:
+        pass
+
+    if problems:
+        logger.error("=" * 70)
+        logger.error("依存パッケージのバージョンが非互換です (Issue #1)")
+        for p in problems:
+            logger.error("  - %s", p)
+        logger.error("復旧コマンド:")
+        logger.error(
+            "  pip install 'transformers>=4.51,<5.0' 'gradio>=6.0,<6.6'"
+        )
+        logger.error("=" * 70)
+
+
 # カスタム CSS
 CUSTOM_CSS = """
 /* Qwen3-TTS-Mac-JP カスタムテーマ */
@@ -321,6 +380,8 @@ def main() -> None:
                         help="UI 言語")
 
     args = parser.parse_args()
+
+    check_dependency_versions()
 
     logger.info("Qwen3-TTS-Mac-GeneLab Web UI を起動中...")
     logger.info(f"ホスト: {args.host}, ポート: {args.port}, 言語: {args.lang}")
