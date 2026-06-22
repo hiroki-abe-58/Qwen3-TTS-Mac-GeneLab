@@ -247,7 +247,8 @@ pip install mlx-audio
 log_step "Step 6/7: 追加依存関係のインストール"
 
 log_info "transformers / accelerate をインストール中..."
-pip install transformers accelerate
+# transformers 5.x は API 破壊的変更により同梱 qwen_tts が動作しないため上限固定 (Issue #1)
+pip install "transformers>=4.51,<5.0" accelerate
 
 log_info "音声処理ライブラリをインストール中..."
 pip install librosa soundfile einops

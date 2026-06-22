@@ -18,7 +18,10 @@ mlx-audio>=0.3.0
 # ======================
 # Transformers & NLP
 # ======================
-transformers>=4.40.0
+# transformers 5.x はデコレータ等のAPIが破壊的変更されており、
+# 同梱の qwen_tts (4.x API 前提) が動作しないため上限を固定する。
+# 動作確認済み: 4.57.6 (Issue #1)
+transformers>=4.51,<5.0
 accelerate>=1.0.0
 tokenizers
 

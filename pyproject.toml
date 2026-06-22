@@ -23,7 +23,7 @@ authors = [
 ]
 
 dependencies = [
-  "transformers>=4.40.0",
+  "transformers>=4.51,<5.0",
   "accelerate>=1.0.0",
   "gradio>=4.0.0",
   "librosa>=0.10.0",
