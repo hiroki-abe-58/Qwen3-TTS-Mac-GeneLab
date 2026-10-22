@@ -703,6 +703,16 @@ class DualEngine:
         Returns:
             選択されたエンジン
         """
+        # Voice Clone は PyTorch MPS（float32 必須）。MLXEngine.generate は参照音声を
+        # 受け取らないため、MLX を指定していても PyTorch MPS を使う（MLX に回すと参照音声が
+        # 無視され、別の声で生成される）
+        if task_type == TaskType.VOICE_CLONE:
+            if self._preferred_engine == EngineType.MLX:
+                logger.warning("Voice Clone は MLX エンジンに未対応のため、PyTorch MPS を使用します。")
+            else:
+                logger.info("Voice Clone: PyTorch MPS を使用します（float32 必須）。")
+            return self._pytorch_engine
+
         # 明示的なエンジン指定
         if self._preferred_engine == EngineType.MLX:
             if self._mlx_engine.is_available:
@@ -714,10 +724,6 @@ class DualEngine:
             return self._pytorch_engine
 
         # AUTO モード
-        # Voice Clone は PyTorch MPS（float32 必須）
-        if task_type == TaskType.VOICE_CLONE:
-            logger.info("Voice Clone: PyTorch MPS を使用します（float32 必須）。")
-            return self._pytorch_engine
 
         # CustomVoice / VoiceDesign は MLX 優先（高速）
         if self._mlx_engine.is_available:
